@@ -1,0 +1,15 @@
+<div class="bg-white rounded-lg shadow-lg p-4">
+    <div class="flex items-center mb-4">
+        <img [src]="character.image" alt="Character Image" class="object-cover rounded-lg w-60 h-auto mr-4">
+        <div>
+            <div>
+                <h3 class="text-lg font-medium">{{ character.name }}</h3>
+                <p class="text-gray-500">{{ character.species }}</p>
+            </div>
+            <div class="mt-24">
+                <p class="text-gray-700">Status: {{ character.status }}</p>
+                <p class="text-gray-700">Location: {{ character.location.name }}</p>
+            </div>
+        </div>
+    </div>
+</div>
