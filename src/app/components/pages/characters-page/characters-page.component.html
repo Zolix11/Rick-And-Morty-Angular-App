@@ -1,6 +1,6 @@
 <div class="container mx-auto">
     <div class="mt-8">
-        <div class="flex items-center mb-4">
+        <div class="flex justify-center  py-8">
             <input type="text" class="px-2 py-1 border border-gray-300 rounded-md" [(ngModel)]="searchName"
                 placeholder="Search characters">
             <button class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
@@ -14,8 +14,15 @@
         </app-character-grid>
 
         <div class="flex justify-center mt-4">
-            <button class="px-3 py-2 mx-1 bg-blue-500 text-white rounded-md" *ngFor="let page of totalPages | range"
-                (click)="goToPage(page)">{{ page }}</button>
+            <button *ngFor="let page of visiblePages" [ngClass]="{
+                'px-3 py-2 mx-1 bg-blue-500 text-white rounded-md': true,
+                'current-page': page === currentPage,
+                'hidden': page > currentPage + 2 || page < currentPage - 2
+              }" (click)="goToPage(page)">
+                {{ page }}
+            </button>
         </div>
+
+
     </div>
 </div>

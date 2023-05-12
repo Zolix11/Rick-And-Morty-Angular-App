@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.current-page {
+    background-color: yellow;
+    color: black;
+  }
+  

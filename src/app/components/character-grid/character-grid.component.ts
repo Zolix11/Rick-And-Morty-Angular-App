@@ -13,24 +13,25 @@ export class CharacterGridComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.calculateColumns();
+    console.log(this.columns);
   }
 
   constructor() {
     if (this.homescreen) {
       this.columns = 3;
     } else {
-      this.columns = 5;
+      this.columns = 4;
     }
-    this.calculateColumns();
   }
 
   ngOnInit(): void {
     this.calculateColumns();
+    console.log(this.columns);
   }
 
   calculateColumns(): void {
-    const screenWidth = window.innerWidth;
-
+    const screenWidth = window.outerWidth;
+    console.log('width:', screenWidth);
     if (this.homescreen) {
       if (screenWidth >= 1024) {
         this.columns = 3; // For large screens, display 3 columns
@@ -41,7 +42,7 @@ export class CharacterGridComponent implements OnInit {
       }
     } else {
       if (screenWidth >= 1024) {
-        this.columns = 5; // For large screens, display 3 columns
+        this.columns = 4; // For large screens, display 3 columns
       } else if (screenWidth >= 768) {
         this.columns = 3; // For medium screens, display 2 columns
       } else {
