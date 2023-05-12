@@ -1,1 +1,21 @@
-<p>characters</p>
+<div class="container mx-auto">
+    <div class="mt-8">
+        <div class="flex items-center mb-4">
+            <input type="text" class="px-2 py-1 border border-gray-300 rounded-md" [(ngModel)]="searchName"
+                placeholder="Search characters">
+            <button class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                (click)="searchCharacters()">Search</button>
+        </div>
+
+        <app-character-grid [characters]="characters" [homescreen]="false">
+            <ng-container *ngFor="let character of characters">
+                <app-character-card-characters-page [character]="character"></app-character-card-characters-page>
+            </ng-container>
+        </app-character-grid>
+
+        <div class="flex justify-center mt-4">
+            <button class="px-3 py-2 mx-1 bg-blue-500 text-white rounded-md" *ngFor="let page of totalPages | range"
+                (click)="goToPage(page)">{{ page }}</button>
+        </div>
+    </div>
+</div>

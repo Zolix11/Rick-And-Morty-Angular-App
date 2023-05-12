@@ -1,3 +1,7 @@
 <div class="mt-16">
-    <app-character-grid [characters]="characters"></app-character-grid>
+    <app-character-grid [characters]="characters" [homescreen]="true">
+        <ng-container *ngFor="let character of characters">
+            <app-character-card [character]="character"></app-character-card>
+        </ng-container>
+    </app-character-grid>
 </div>
