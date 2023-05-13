@@ -4,14 +4,15 @@
     <div class="flex justify-around py-8">
         <app-season-dropdown></app-season-dropdown>
         <span>
-            <input type="text" class="px-2 py-1 border border-gray-300 rounded-md" [(ngModel)]="searchText"
-                placeholder="Search episodes">
+            <input type="text" class="px-4 py-1 border border-gray-300 rounded-md placeholder-gray-500::placeholder"
+                [(ngModel)]="searchText" placeholder="S01E02">
+
             <button class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                 (click)="searchForEpisodeName()">Search</button>
 
         </span>
     </div>
-    <ng-container *ngFor="let episode of onScreenEpisodes">
+    <ng-container *ngFor="let episode of onScreenEpisodes ; let i = index" [@fadeInOut]="getAnimationState(i)">
         <div class="border border-gray-300 rounded p-4">
             <h2 class="text-xl font-bold">{{ episode.name }}</h2>
             <p class="text-gray-500">Aired on: {{ episode.air_date }}</p>

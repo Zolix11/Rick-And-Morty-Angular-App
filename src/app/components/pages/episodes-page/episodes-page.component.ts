@@ -7,10 +7,22 @@ import {
   Character,
   ApiResponse,
 } from 'rickmortyapi';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-episodes-page',
   templateUrl: './episodes-page.component.html',
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('3000ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('3000ms', style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class EpisodesPageComponent implements OnInit {
   searchText: string = '';
@@ -158,6 +170,9 @@ export class EpisodesPageComponent implements OnInit {
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i
     );
+  }
+  getAnimationState(index: number): string {
+    return index % 2 === 0 ? 'fadeInOut' : '';
   }
 }
 

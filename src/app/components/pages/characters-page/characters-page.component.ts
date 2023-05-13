@@ -16,7 +16,6 @@ export class CharactersPageComponent {
   maxVisiblePages = 5; // Replace with the maximum number of visible pages you want
   constructor(
     private favoritesCharacterService: FavoriteCharactersService,
-    private sidebarService: SidebarStateService
   ) {}
 
   async ngOnInit() {
