@@ -13,6 +13,7 @@ import {
   templateUrl: './episodes-page.component.html',
 })
 export class EpisodesPageComponent implements OnInit {
+  searchText: string = '';
   onScreenEpisodes: OnScreenEpisode[] = [];
   allEpisodes: Episode[] = [];
   currentPage: number = 1;
@@ -21,6 +22,16 @@ export class EpisodesPageComponent implements OnInit {
   visiblePages: number[] = [];
   searchState: boolean = false;
   maxVisiblePages = 5;
+  showModal = false;
+  content: string = '';
+  openModal(modalText: string) {
+    this.content = modalText;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
   constructor(private seasonDataService: SeasonDataService) {}
 
   async ngOnInit() {
@@ -37,6 +48,29 @@ export class EpisodesPageComponent implements OnInit {
     );
   }
 
+  searchForEpisodeName() {
+    if (this.searchText.length != 0) {
+      this.fetchEpisodeWithName();
+    } else {
+      this.openModal('Please specify an episode code!');
+    }
+  }
+
+  async fetchEpisodeWithName() {
+    const response = await getEpisodes({
+      episode: this.searchText,
+    });
+    this.allEpisodes = response.data.results || [];
+    this.totalPages = Math.ceil(
+      response.data.results?.length! / this.episodesPerPage
+    );
+    if (this.allEpisodes.length == 0) {
+      this.openModal('No luck today');
+    }
+    console.log('Response', this.allEpisodes);
+    this.currentPage = 1;
+    this.goToPage(this.currentPage);
+  }
   async fetchEpisodes(selectedSeason: string) {
     try {
       const response = await getEpisodes({ episode: selectedSeason });

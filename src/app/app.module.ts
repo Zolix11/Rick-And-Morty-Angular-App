@@ -16,6 +16,11 @@ import { EpisodeGridComponent } from './components/episode-grid/episode-grid.com
 import { SeasonDropdownComponent } from './components/season-dropdown/season-dropdown.component';
 import { SeasonDataService } from './services/season-data.service';
 import { ExpandableLookComponent } from './components/expandable-look/expandable-look.component';
+import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
+import { FavoriteCharactersService } from './services/favorite-characters.service';
+import { SidebarFavoritesComponent } from './components/sidebar-favorites/sidebar-favorites.component';
+import { SidebarCardComponent } from './components/sidebar-card/sidebar-card.component';
+import { SidebarStateService } from './services/sidebar-state.service';
 
 @NgModule({
   declarations: [
@@ -31,10 +36,13 @@ import { ExpandableLookComponent } from './components/expandable-look/expandable
     CharacterCardCharactersPageComponent,
     EpisodeGridComponent,
     SeasonDropdownComponent,
-    ExpandableLookComponent
+    ExpandableLookComponent,
+    ModalDialogComponent,
+    SidebarFavoritesComponent,
+    SidebarCardComponent
   ],
   imports: [BrowserModule, AppRoutingModule,FormsModule],
-  providers: [SeasonDataService],
+  providers: [SeasonDataService, FavoriteCharactersService, SidebarStateService],
   bootstrap: [StarterPageComponent],
 })
 export class AppModule {}

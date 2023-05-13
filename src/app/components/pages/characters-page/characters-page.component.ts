@@ -1,6 +1,7 @@
+import { SidebarStateService } from './../../../services/sidebar-state.service';
 import { Component } from '@angular/core';
-import { ApiResponse, Info, getCharacters, Character } from 'rickmortyapi';
-
+import { getCharacters, Character } from 'rickmortyapi';
+import { FavoriteCharactersService } from 'src/app/services/favorite-characters.service';
 @Component({
   selector: 'app-characters-page',
   templateUrl: './characters-page.component.html',
@@ -13,6 +14,11 @@ export class CharactersPageComponent {
   visiblePages: number[] = [];
   searchState: boolean = false;
   maxVisiblePages = 5; // Replace with the maximum number of visible pages you want
+  constructor(
+    private favoritesCharacterService: FavoriteCharactersService,
+    private sidebarService: SidebarStateService
+  ) {}
+
   async ngOnInit() {
     await this.fetchCharacters(this.currentPage);
     this.calculateVisiblePages(
@@ -20,6 +26,14 @@ export class CharactersPageComponent {
       this.totalPages,
       this.maxVisiblePages
     );
+  }
+
+  addToFavorites(character: Character): void {
+    this.favoritesCharacterService.addToFavorites(character);
+  }
+
+  removeFromFavorites(character: Character): void {
+    this.favoritesCharacterService.removeFromFavorites(character);
   }
 
   async fetchCharacters(page: number) {

@@ -1,9 +1,13 @@
 <div class="container mx-auto mt-8">
+    <app-modal-dialog *ngIf="showModal" (closeModalEvent)="closeModal()" [content]="content"
+        [title]="'No result'"></app-modal-dialog>
     <div class="flex justify-around py-8">
         <app-season-dropdown></app-season-dropdown>
         <span>
-            <input type="text" class="px-2 py-1 border border-gray-300 rounded-md" placeholder="Search episodes">
-            <button class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md">Search</button>
+            <input type="text" class="px-2 py-1 border border-gray-300 rounded-md" [(ngModel)]="searchText"
+                placeholder="Search episodes">
+            <button class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                (click)="searchForEpisodeName()">Search</button>
 
         </span>
     </div>
@@ -12,7 +16,6 @@
             <h2 class="text-xl font-bold">{{ episode.name }}</h2>
             <p class="text-gray-500">Aired on: {{ episode.air_date }}</p>
             <p class="text-gray-500">Episode code: {{ episode.episode }}</p>
-
             <app-expandable-look title="Characters">
                 <app-episode-grid>
                     <ng-container *ngFor="let character of episode.characters">

@@ -1,5 +1,4 @@
 import { Component, Input, HostListener, OnInit } from '@angular/core';
-import { Character } from 'rickmortyapi';
 
 @Component({
   selector: 'app-character-grid',
