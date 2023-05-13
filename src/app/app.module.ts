@@ -12,7 +12,10 @@ import { StarterPageComponent } from './components/pages/starter-page-navbar-pag
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { RangePipe } from './pipes/range.pipe';
 import { CharacterCardCharactersPageComponent } from './components/character-card-characters-page/character-card-characters-page.component';
-import { CharacterCardProjectionComponent } from './components/character-card-projection/character-card-projection.component';
+import { EpisodeGridComponent } from './components/episode-grid/episode-grid.component';
+import { SeasonDropdownComponent } from './components/season-dropdown/season-dropdown.component';
+import { SeasonDataService } from './services/season-data.service';
+import { ExpandableLookComponent } from './components/expandable-look/expandable-look.component';
 
 @NgModule({
   declarations: [
@@ -26,10 +29,12 @@ import { CharacterCardProjectionComponent } from './components/character-card-pr
     HomePageComponent,
     RangePipe,
     CharacterCardCharactersPageComponent,
-    CharacterCardProjectionComponent
+    EpisodeGridComponent,
+    SeasonDropdownComponent,
+    ExpandableLookComponent
   ],
   imports: [BrowserModule, AppRoutingModule,FormsModule],
-  providers: [],
+  providers: [SeasonDataService],
   bootstrap: [StarterPageComponent],
 })
 export class AppModule {}

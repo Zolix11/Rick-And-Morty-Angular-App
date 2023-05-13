@@ -45,6 +45,7 @@ export class CharactersPageComponent {
         this.maxVisiblePages
       );
     } else {
+      this.searchState = false;
       this.currentPage = 1;
       await this.fetchCharacters(this.currentPage);
     }

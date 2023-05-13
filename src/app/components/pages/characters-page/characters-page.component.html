@@ -1,5 +1,4 @@
-<div class="container mx-auto">
-    <div class="mt-8">
+<div class="container mx-auto mt-8">
         <div class="flex justify-center  py-8">
             <input type="text" class="px-2 py-1 border border-gray-300 rounded-md" [(ngModel)]="searchName"
                 placeholder="Search characters">
@@ -7,7 +6,7 @@
                 (click)="searchCharacters()">Search</button>
         </div>
 
-        <app-character-grid [characters]="characters" [homescreen]="false">
+        <app-character-grid [homescreen]="false">
             <ng-container *ngFor="let character of characters">
                 <app-character-card-characters-page [character]="character"></app-character-card-characters-page>
             </ng-container>
@@ -22,7 +21,4 @@
                 {{ page }}
             </button>
         </div>
-
-
-    </div>
 </div>
