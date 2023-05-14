@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  Location,
-  getLocations,
-  Character,
-  getCharacter,
   ApiResponse,
-} from 'rickmortyapi';
+  Location,
+  Character,
+} from 'src/app/interfaces/interfaces';
+import { RickAndMortyService } from 'src/app/services/rick-and-morty.service';
 @Component({
   selector: 'app-locations-page',
   templateUrl: './locations-page.component.html',
@@ -19,6 +18,8 @@ export class LocationsPageComponent implements OnInit {
   maxVisiblePages = 5;
   showModal = false;
   content: string = '';
+  constructor(private rickAndMortyService: RickAndMortyService) {}
+
   async ngOnInit() {
     await this.fetchLocations(this.currentPage);
     this.goToPage(this.currentPage);
@@ -33,16 +34,10 @@ export class LocationsPageComponent implements OnInit {
   }
 
   async fetchLocations(page: number) {
-    try {
-      const response = await getLocations({
-        page: page,
-      });
+    await this.rickAndMortyService.getLocations(page).then((response) => {
       this.locations = response.data.results || [];
       this.totalPages = response.data.info?.pages!;
-      console.log('Locations', this.locations);
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-    }
+    });
   }
 
   getUserId(url: string): number {
@@ -55,9 +50,9 @@ export class LocationsPageComponent implements OnInit {
   async getCharactersFromStringArray(
     characters: string[]
   ): Promise<Character[]> {
-    const characterIds = characters.map((url: string) => this.getUserId(url));
+    const characterIds = characters.map((image: string) => this.getUserId(image));
     const characterPromises = characterIds.map((characterId: number) =>
-      getCharacter(characterId)
+      this.rickAndMortyService.getCharacter(characterId)
     );
     const characterResults = await Promise.all(characterPromises);
     const newCharacters: Character[] = [];
@@ -73,6 +68,7 @@ export class LocationsPageComponent implements OnInit {
       await this.fetchLocations(this.currentPage);
       this.onScreenLocations.splice(0);
       this.locations.forEach(async (location: Location) => {
+
         const charachters = await this.getCharactersFromStringArray(
           location.residents
         );

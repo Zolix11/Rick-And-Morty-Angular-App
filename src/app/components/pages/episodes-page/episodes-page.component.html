@@ -12,7 +12,7 @@
 
         </span>
     </div>
-    <ng-container *ngFor="let episode of onScreenEpisodes ; let i = index" [@fadeInOut]="getAnimationState(i)">
+    <ng-container *ngFor="let episode of onScreenEpisodes">
         <div class="border border-gray-300 rounded p-4">
             <h2 class="text-xl font-bold">{{ episode.name }}</h2>
             <p class="text-gray-500">Aired on: {{ episode.air_date }}</p>

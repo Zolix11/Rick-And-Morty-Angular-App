@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { FavoriteCharactersService } from 'src/app/services/favorite-characters.service';
-import { Character } from 'rickmortyapi';
+import { Character } from 'src/app/interfaces/interfaces';
 import { SidebarStateService } from 'src/app/services/sidebar-state.service';
 @Component({
   selector: 'app-sidebar-favorites',

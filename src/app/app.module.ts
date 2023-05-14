@@ -21,6 +21,8 @@ import { FavoriteCharactersService } from './services/favorite-characters.servic
 import { SidebarFavoritesComponent } from './components/sidebar-favorites/sidebar-favorites.component';
 import { SidebarCardComponent } from './components/sidebar-card/sidebar-card.component';
 import { SidebarStateService } from './services/sidebar-state.service';
+import { RickAndMortyService } from './services/rick-and-morty.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -39,10 +41,15 @@ import { SidebarStateService } from './services/sidebar-state.service';
     ExpandableLookComponent,
     ModalDialogComponent,
     SidebarFavoritesComponent,
-    SidebarCardComponent
+    SidebarCardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule,FormsModule],
-  providers: [SeasonDataService, FavoriteCharactersService, SidebarStateService],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  providers: [
+    SeasonDataService,
+    FavoriteCharactersService,
+    SidebarStateService,
+    RickAndMortyService,
+  ],
   bootstrap: [StarterPageComponent],
 })
 export class AppModule {}

@@ -1,28 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { SeasonDataService } from 'src/app/services/season-data.service';
-import {
-  Episode,
-  getEpisodes,
-  getCharacter,
-  Character,
-  ApiResponse,
-} from 'rickmortyapi';
-import { trigger, transition, style, animate } from '@angular/animations';
-
+import { Episode, Character,ApiResponse } from 'src/app/interfaces/interfaces';
+import { RickAndMortyService } from 'src/app/services/rick-and-morty.service';
 @Component({
   selector: 'app-episodes-page',
   templateUrl: './episodes-page.component.html',
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('3000ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('3000ms', style({ opacity: 0 })),
-      ]),
-    ]),
-  ],
 })
 export class EpisodesPageComponent implements OnInit {
   searchText: string = '';
@@ -44,7 +26,10 @@ export class EpisodesPageComponent implements OnInit {
   closeModal() {
     this.showModal = false;
   }
-  constructor(private seasonDataService: SeasonDataService) {}
+  constructor(
+    private seasonDataService: SeasonDataService,
+    private rickAndMortyService: RickAndMortyService
+  ) {}
 
   async ngOnInit() {
     this.seasonDataService.selectedSeason$.subscribe(
@@ -69,13 +54,12 @@ export class EpisodesPageComponent implements OnInit {
   }
 
   async fetchEpisodeWithName() {
-    const response = await getEpisodes({
-      episode: this.searchText,
+    await this.rickAndMortyService.getEpisodes(undefined,this.searchText).then((response) => {
+      this.allEpisodes = response.data.results || [];
+      this.totalPages =  Math.ceil(
+        response.data.results?.length! / this.episodesPerPage
+      );;
     });
-    this.allEpisodes = response.data.results || [];
-    this.totalPages = Math.ceil(
-      response.data.results?.length! / this.episodesPerPage
-    );
     if (this.allEpisodes.length == 0) {
       this.openModal('No luck today');
     }
@@ -85,11 +69,12 @@ export class EpisodesPageComponent implements OnInit {
   }
   async fetchEpisodes(selectedSeason: string) {
     try {
-      const response = await getEpisodes({ episode: selectedSeason });
-      this.allEpisodes = response.data.results || [];
-      this.totalPages = Math.ceil(
-        response.data.results?.length! / this.episodesPerPage
-      );
+      await this.rickAndMortyService.getEpisodes(undefined,selectedSeason).then((response) => {
+        this.allEpisodes = response.data.results || [];
+        this.totalPages =  Math.ceil(
+          response.data.results?.length! / this.episodesPerPage
+        );;
+      });
       console.log('totalpages:' + this.totalPages);
       console.log('total episodes' + this.allEpisodes.length);
 
@@ -111,7 +96,7 @@ export class EpisodesPageComponent implements OnInit {
   ): Promise<Character[]> {
     const characterIds = characters.map((url: string) => this.getUserId(url));
     const characterPromises = characterIds.map((characterId: number) =>
-      getCharacter(characterId)
+      this.rickAndMortyService.getCharacter(characterId)
     );
     const characterResults = await Promise.all(characterPromises);
     const newCharacters: Character[] = [];
@@ -170,9 +155,6 @@ export class EpisodesPageComponent implements OnInit {
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i
     );
-  }
-  getAnimationState(index: number): string {
-    return index % 2 === 0 ? 'fadeInOut' : '';
   }
 }
 

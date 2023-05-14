@@ -1,7 +1,7 @@
-import { SidebarStateService } from './../../../services/sidebar-state.service';
 import { Component } from '@angular/core';
-import { getCharacters, Character } from 'rickmortyapi';
+import { Character } from 'src/app/interfaces/interfaces';
 import { FavoriteCharactersService } from 'src/app/services/favorite-characters.service';
+import { RickAndMortyService } from 'src/app/services/rick-and-morty.service';
 @Component({
   selector: 'app-characters-page',
   templateUrl: './characters-page.component.html',
@@ -16,6 +16,7 @@ export class CharactersPageComponent {
   maxVisiblePages = 5; // Replace with the maximum number of visible pages you want
   constructor(
     private favoritesCharacterService: FavoriteCharactersService,
+    private rickAndMortyService: RickAndMortyService
   ) {}
 
   async ngOnInit() {
@@ -37,9 +38,13 @@ export class CharactersPageComponent {
 
   async fetchCharacters(page: number) {
     try {
-      const response = await getCharacters({ page });
-      this.characters = response.data.results || [];
-      this.totalPages = response.data.info?.pages || 0;
+      await this.rickAndMortyService
+        .getCharacters(page, undefined)
+        .then((response) => {
+          console.log(response);
+          this.characters = response.data.results || [];
+          this.totalPages = response.data.info?.pages!;
+        });
       console.log('totalpages:' + this.totalPages);
     } catch (error) {
       console.error('Error fetching characters:', error);
@@ -65,12 +70,12 @@ export class CharactersPageComponent {
   }
 
   async fetchSearchCharacters(name: string, page: number) {
-    const response = await getCharacters({
-      name: name,
-      page: page,
-    });
-    this.characters = response.data.results || [];
-    this.totalPages = response.data.info?.pages || 0;
+    await this.rickAndMortyService
+      .getCharacters(page, name)
+      .then((response) => {
+        this.characters = response.data.results || [];
+        this.totalPages = response.data.info?.pages!;
+      });
   }
 
   goToPage(page: number) {

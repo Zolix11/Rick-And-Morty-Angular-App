@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Character } from 'rickmortyapi';
+import { Character } from '../interfaces/interfaces';
 import { Subject } from 'rxjs';
 
 @Injectable({
