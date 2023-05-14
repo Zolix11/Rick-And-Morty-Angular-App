@@ -1,5 +1,5 @@
-<div class="bg-white rounded-lg shadow-lg p-2" [class.bg-green-200]="liked" (click)="toggleLiked()">
-    <div class="flex justify-between items-start">
+<div class="bg-white rounded-lg shadow-lg p-2 " (click)="toggleLiked()">
+    <div class="flex justify-between items-start " [class.bg-green-200]="liked">
         <div class="flex flex-col">
             <div class="flex flex-row text-left mb-2">
                 <h3 class="font-medium mr-4">{{ character.name }}</h3>
