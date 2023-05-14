@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SeasonDataService } from 'src/app/services/season-data.service';
-import { Episode, Character,ApiResponse } from 'src/app/interfaces/interfaces';
+import { Episode, Character, ApiResponse } from 'src/app/interfaces/interfaces';
 import { RickAndMortyService } from 'src/app/services/rick-and-morty.service';
+import { OnScreenEpisode } from 'src/app/interfaces/customenterfaces';
+
+/**
+ * Represents the episode page componenet
+ */
 @Component({
   selector: 'app-episodes-page',
   templateUrl: './episodes-page.component.html',
@@ -18,14 +23,23 @@ export class EpisodesPageComponent implements OnInit {
   maxVisiblePages = 5;
   showModal = false;
   content: string = '';
-  openModal(modalText: string) {
+
+   /**
+   * Opens the modal with the specified text.
+   * @param modalText The text to display in the modal.
+   */
+   openModal(modalText: string) {
     this.content = modalText;
     this.showModal = true;
   }
 
+  /**
+   * Closes the modal.
+   */
   closeModal() {
     this.showModal = false;
   }
+
   constructor(
     private seasonDataService: SeasonDataService,
     private rickAndMortyService: RickAndMortyService
@@ -45,6 +59,9 @@ export class EpisodesPageComponent implements OnInit {
     );
   }
 
+  /**
+   * Searches for an episode by name using the search text.
+   */
   searchForEpisodeName() {
     if (this.searchText.length != 0) {
       this.fetchEpisodeWithName();
@@ -54,12 +71,14 @@ export class EpisodesPageComponent implements OnInit {
   }
 
   async fetchEpisodeWithName() {
-    await this.rickAndMortyService.getEpisodes(undefined,this.searchText).then((response) => {
-      this.allEpisodes = response.data.results || [];
-      this.totalPages =  Math.ceil(
-        response.data.results?.length! / this.episodesPerPage
-      );;
-    });
+    await this.rickAndMortyService
+      .getEpisodes(undefined, this.searchText)
+      .then((response) => {
+        this.allEpisodes = response.data.results || [];
+        this.totalPages = Math.ceil(
+          response.data.results?.length! / this.episodesPerPage
+        );
+      });
     if (this.allEpisodes.length == 0) {
       this.openModal('No luck today');
     }
@@ -67,14 +86,21 @@ export class EpisodesPageComponent implements OnInit {
     this.currentPage = 1;
     this.goToPage(this.currentPage);
   }
+
+  /**
+   * Fetches episodes for the selected season.
+   * @param selectedSeason The selected season.
+   */
   async fetchEpisodes(selectedSeason: string) {
     try {
-      await this.rickAndMortyService.getEpisodes(undefined,selectedSeason).then((response) => {
-        this.allEpisodes = response.data.results || [];
-        this.totalPages =  Math.ceil(
-          response.data.results?.length! / this.episodesPerPage
-        );;
-      });
+      await this.rickAndMortyService
+        .getEpisodes(undefined, selectedSeason)
+        .then((response) => {
+          this.allEpisodes = response.data.results || [];
+          this.totalPages = Math.ceil(
+            response.data.results?.length! / this.episodesPerPage
+          );
+        });
       console.log('totalpages:' + this.totalPages);
       console.log('total episodes' + this.allEpisodes.length);
 
@@ -84,6 +110,11 @@ export class EpisodesPageComponent implements OnInit {
     }
   }
 
+    /**
+   * Extracts the user ID from the given URL.
+   * @param url The URL containing the user ID.
+   * @returns The extracted user ID.
+   */
   getUserId(url: string): number {
     const id = parseInt(url.split('/').pop()!, 10);
     console.log('ID:' + url);
@@ -91,6 +122,11 @@ export class EpisodesPageComponent implements OnInit {
     return id;
   }
 
+  /**
+   * Retrieves character data from an array of character URLs.
+   * @param characters The array of character URLs.
+   * @returns A promise that resolves to an array of characters.
+   */
   async getCharactersFromStringArray(
     characters: string[]
   ): Promise<Character[]> {
@@ -106,6 +142,10 @@ export class EpisodesPageComponent implements OnInit {
     return newCharacters;
   }
 
+  /**
+   * Navigates to the specified page and fetches the corresponding episodes.
+   * @param page The page number to navigate to.
+   */
   async goToPage(page: number) {
     console.log('State:' + this.searchState);
     console.log('State:' + this.currentPage);
@@ -115,7 +155,7 @@ export class EpisodesPageComponent implements OnInit {
       const end = start + this.episodesPerPage;
       this.onScreenEpisodes.splice(0);
       this.allEpisodes.slice(start, end).forEach(async (episode: Episode) => {
-        const charachters = await this.getCharactersFromStringArray(
+        const characters = await this.getCharactersFromStringArray(
           episode.characters
         );
         const newEpisode: OnScreenEpisode = {
@@ -123,7 +163,7 @@ export class EpisodesPageComponent implements OnInit {
           name: episode.name,
           air_date: episode.air_date,
           episode: episode.episode,
-          characters: charachters,
+          characters: characters,
           url: episode.url,
           created: episode.created,
         };
@@ -136,6 +176,13 @@ export class EpisodesPageComponent implements OnInit {
       });
     }
   }
+
+  /**
+   * Calculates the range of visible pages based on the current page and total pages.
+   * @param currentPage The current page number.
+   * @param totalPages The total number of pages.
+   * @param maxVisiblePages The maximum number of visible pages.
+   */
   calculateVisiblePages(
     currentPage: number,
     totalPages: number,
@@ -156,14 +203,4 @@ export class EpisodesPageComponent implements OnInit {
       (_, i) => startPage + i
     );
   }
-}
-
-interface OnScreenEpisode {
-  id: number;
-  name: string;
-  air_date: string;
-  episode: string;
-  characters: Character[];
-  url: string;
-  created: string;
 }

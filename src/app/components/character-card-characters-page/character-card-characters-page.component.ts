@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Character } from 'rickmortyapi';
+import { Character } from 'src/app/interfaces/interfaces';
 import { FavoriteCharactersService } from 'src/app/services/favorite-characters.service';
 
 @Component({
