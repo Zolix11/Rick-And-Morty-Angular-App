@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Character, getCharacters, getCharacter } from 'rickmortyapi';
+import { ApiResponse, Location, Info, Character, Episode } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-character-card',

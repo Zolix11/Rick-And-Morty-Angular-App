@@ -1,10 +1,18 @@
-import { Component, Input } from '@angular/core';
-import { Character } from 'rickmortyapi';
+import { Component, Input, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-character-grid',
-  templateUrl: './character-grid.component.html'
+  templateUrl: './character-grid.component.html',
 })
-export class CharacterGridComponent {
-  @Input() characters: Character[] = [];
+export class CharacterGridComponent implements OnInit {
+  @Input() homescreen: boolean = false;
+  columns: number = 3;
+
+  ngOnInit(): void {
+    if (this.homescreen) {
+      this.columns = 3;
+    } else {
+      this.columns = 4;
+    }
+  }
 }

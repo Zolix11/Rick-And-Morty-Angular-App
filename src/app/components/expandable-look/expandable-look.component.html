@@ -1,0 +1,10 @@
+<div class="border border-gray-300 rounded mb-4">
+    <div class="bg-gray-200 px-4 py-2 flex justify-between items-center cursor-pointer"
+        (click)="toggleExpand()">
+        <h3 class="text-lg font-bold">{{ title }}</h3>
+        <span class="font-bold text-xl">{{ isExpanded ? '-' : '+' }}</span>
+    </div>
+    <div class="bg-white px-4 py-2" [hidden]="!isExpanded">
+        <ng-content></ng-content>
+    </div>
+</div>

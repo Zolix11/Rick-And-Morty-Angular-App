@@ -1,0 +1,31 @@
+<div class="container mx-auto my-8">
+    <app-modal-dialog *ngIf="showModal" (closeModalEvent)="closeModal()" [content]="content"
+        [title]="'No result'"></app-modal-dialog>
+
+    <ng-container *ngFor="let location of onScreenLocations">
+        <div class="p-4 border border-gray-300 rounded-lg">
+            <h4 class="text-lg font-semibold">{{ location.name }}</h4>
+            <p class="text-gray-700">Type: {{ location.type }}</p>
+            <p class="text-gray-700">Dimension: {{ location.dimension }}</p>
+            <p class="text-gray-700">Residents: {{ location.residents.length}}</p>
+            <app-expandable-look *ngIf="location.residents.length!=0" title="Residents">
+                <app-episode-grid>
+                    <ng-container *ngFor="let character of location.residents">
+                        <app-character-card-characters-page
+                            [character]="character"></app-character-card-characters-page>
+                    </ng-container>
+                </app-episode-grid>
+            </app-expandable-look>
+        </div>
+    </ng-container>
+
+    <div class="flex justify-center mt-4">
+        <button *ngFor="let page of visiblePages" [ngClass]="{
+            'px-3 py-2 mx-1 bg-blue-500 text-white rounded-md': true,
+            'current-page': page === currentPage,
+            'hidden': page > currentPage + 2 || page < currentPage - 2
+          }" (click)="goToPage(page)">
+            {{ page }}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 shadow-lg">
+      <h2 class="text-xl font-bold mb-4">{{title}}</h2>
+      <p>{{content}}</p>
+      <div class="mt-6 flex justify-end">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-50 z-40" (click)="closeModal()"></div>
+  

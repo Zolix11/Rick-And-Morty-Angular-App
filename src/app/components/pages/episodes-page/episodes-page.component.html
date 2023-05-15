@@ -1,1 +1,39 @@
-<p>episodes-page works!</p>
+<div class="container mx-auto mt-8">
+    <app-modal-dialog *ngIf="showModal" (closeModalEvent)="closeModal()" [content]="content"
+        [title]="'No result'"></app-modal-dialog>
+    <div class="flex justify-around py-8">
+        <app-season-dropdown></app-season-dropdown>
+        <span>
+            <input type="text" class="px-4 py-1 border border-gray-300 rounded-md placeholder-gray-500::placeholder"
+                [(ngModel)]="searchText" placeholder="S01E02">
+
+            <button class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                (click)="searchForEpisodeName()">Search</button>
+
+        </span>
+    </div>
+    <ng-container *ngFor="let episode of onScreenEpisodes">
+        <div class="border border-gray-300 rounded p-4">
+            <h2 class="text-xl font-bold">{{ episode.name }}</h2>
+            <p class="text-gray-500">Aired on: {{ episode.air_date }}</p>
+            <p class="text-gray-500">Episode code: {{ episode.episode }}</p>
+            <app-expandable-look title="Characters">
+                <app-episode-grid>
+                    <ng-container *ngFor="let character of episode.characters">
+                        <app-character-card-characters-page
+                            [character]="character"></app-character-card-characters-page>
+                    </ng-container>
+                </app-episode-grid>
+            </app-expandable-look>
+        </div>
+    </ng-container>
+    <div class="flex justify-center mt-4">
+        <button *ngFor="let page of visiblePages" [ngClass]="{
+            'px-3 py-2 mx-1 bg-blue-500 text-white rounded-md': true,
+            'current-page': page === currentPage,
+            'hidden': page > currentPage + 2 || page < currentPage - 2
+          }" (click)="goToPage(page)">
+            {{ page }}
+        </button>
+    </div>
+</div>
